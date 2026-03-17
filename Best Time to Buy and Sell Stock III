@@ -1,0 +1,28 @@
+class Solution(object):
+    def maxProfit(self, prices):
+        if not prices:
+            return 0
+        
+        # Initialize states
+        # buy1 and buy2 represent the money spent (we want to minimize this)
+        # sell1 and sell2 represent the profit (we want to maximize this)
+        buy1 = float('inf')
+        sell1 = 0
+        buy2 = float('inf')
+        sell2 = 0
+        
+        for price in prices:
+            # 1. Best price to buy the first stock
+            buy1 = min(buy1, price)
+            
+            # 2. Best profit from selling the first stock
+            sell1 = max(sell1, price - buy1)
+            
+            # 3. Best "effective" price for second stock 
+            # (treating the first profit as a discount)
+            buy2 = min(buy2, price - sell1)
+            
+            # 4. Best total profit after selling the second stock
+            sell2 = max(sell2, price - buy2)
+            
+        return sell2
