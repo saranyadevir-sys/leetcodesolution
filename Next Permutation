@@ -1,0 +1,33 @@
+class Solution(object):
+    def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        pivot = -1
+        
+        # 1. Find the rightmost 'pivot' where nums[i] < nums[i+1]
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                pivot = i
+                break
+        
+        # 2. If no pivot is found, the array is in descending order; reverse it.
+        if pivot == -1:
+            nums.reverse()
+            return
+
+        # 3. Find the smallest element to the right of the pivot that is larger than nums[pivot]
+        for i in range(n - 1, pivot, -1):
+            if nums[i] > nums[pivot]:
+                # Swap the pivot with this successor
+                nums[pivot], nums[i] = nums[i], nums[pivot]
+                break
+        
+        # 4. Reverse the sequence to the right of the pivot to get the smallest possible order
+        left, right = pivot + 1, n - 1
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
