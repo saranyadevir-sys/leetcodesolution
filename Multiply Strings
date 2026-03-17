@@ -1,0 +1,28 @@
+class Solution(object):
+    def multiply(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        # Result array to store individual digit products
+        res = [0] * (len(num1) + len(num2))
+        
+        # Reverse iterate through both strings
+        for i in range(len(num1) - 1, -1, -1):
+            for j in range(len(num2) - 1, -1, -1):
+                # Calculate product of digits and their position
+                mul = (ord(num1[i]) - ord('0')) * (ord(num2[j]) - ord('0'))
+                p1, p2 = i + j, i + j + 1
+                
+                # Add to the current position (p2) and handle carry
+                total = mul + res[p2]
+                res[p2] = total % 10
+                res[p1] += total // 10
+        
+        # Convert result array to string, skipping leading zeros
+        ans = "".join(map(str, res))
+        return ans.lstrip('0')
