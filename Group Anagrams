@@ -1,0 +1,20 @@
+from collections import defaultdict
+
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        # Create a map where the key is the sorted version of the word
+        # and the value is a list of words that match that sorted key.
+        anagram_map = defaultdict(list)
+        
+        for s in strs:
+            # Sort the characters of the string to create a unique key
+            # "eat", "tea", "ate" all become "aet"
+            sorted_key = "".join(sorted(s))
+            anagram_map[sorted_key].append(s)
+            
+        # Return all the groups as a list of lists
+        return list(anagram_map.values())
