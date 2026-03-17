@@ -1,0 +1,25 @@
+class Solution(object):
+    def inorderTraversal(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[int]
+        """
+        res = []
+        stack = []
+        curr = root
+        
+        while curr or stack:
+            # 1. Reach the leftmost node of the current subtree
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            
+            # 2. Backtrack from the stack
+            curr = stack.pop()
+            res.append(curr.val) # Process the Node
+            
+            # 3. We have visited the node and its left subtree. 
+            # Now, it's the right subtree's turn.
+            curr = curr.right
+            
+        return res
