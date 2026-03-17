@@ -1,0 +1,20 @@
+class Solution(object):
+    def generateParenthesis(self, n):
+        ans = []
+        
+        def backtrack(S, left, right):
+            # Base Case: string is full length
+            if len(S) == 2 * n:
+                ans.append(S)
+                return
+            
+            # Rule 1: Add opening bracket if we haven't reached n
+            if left < n:
+                backtrack(S + "(", left + 1, right)
+            
+            # Rule 2: Add closing bracket if it doesn't exceed open brackets
+            if right < left:
+                backtrack(S + ")", left, right + 1)
+
+        backtrack("", 0, 0)
+        return ans
