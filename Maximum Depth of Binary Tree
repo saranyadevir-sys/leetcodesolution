@@ -1,0 +1,11 @@
+class Solution(object):
+    def maxDepth(self, root):
+        # Base case: empty tree has depth 0
+        if not root:
+            return 0
+        
+        # Recursive case: 1 + max depth of children
+        left_depth = self.maxDepth(root.left)
+        right_depth = self.maxDepth(root.right)
+        
+        return 1 + max(left_depth, right_depth)
