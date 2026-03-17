@@ -1,0 +1,24 @@
+class Solution(object):
+    def largestRectangleArea(self, heights):
+        """
+        :type heights: List[int]
+        :rtype: int
+        """
+        stack = [-1] # Sentinel value to handle the left boundary
+        max_area = 0
+        heights.append(0) # Sentinel value to flush the stack at the end
+        
+        for i in range(len(heights)):
+            # While the current height is shorter than the bar at the stack top
+            while heights[i] < heights[stack[-1]]:
+                # Pop the height to calculate its rectangle area
+                h = heights[stack.pop()]
+                # Width is the distance between current index and new top of stack
+                w = i - stack[-1] - 1
+                max_area = max(max_area, h * w)
+            
+            stack.append(i)
+            
+        # Remove the sentinel 0 we added to restore the input (optional)
+        heights.pop()
+        return max_area
