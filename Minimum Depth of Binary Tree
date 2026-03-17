@@ -1,0 +1,15 @@
+class Solution(object):
+    def minDepth(self, root):
+        if not root:
+            return 0
+        
+        # If the left child is missing, we must go right
+        if not root.left:
+            return 1 + self.minDepth(root.right)
+            
+        # If the right child is missing, we must go left
+        if not root.right:
+            return 1 + self.minDepth(root.left)
+            
+        # If both exist, find the shorter path
+        return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
