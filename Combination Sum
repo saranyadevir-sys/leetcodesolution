@@ -1,0 +1,28 @@
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        results = []
+
+        def backtrack(remain, combo, start):
+            if remain == 0:
+                # Make a deep copy of the current combination
+                results.append(list(combo))
+                return
+            elif remain < 0:
+                # Exceeded the target, stop exploring this path
+                return
+
+            for i in range(start, len(candidates)):
+                # Add the number to the combination
+                combo.append(candidates[i])
+                # Note: 'i' is passed as 'start' because we can reuse the same number
+                backtrack(remain - candidates[i], combo, i)
+                # Backtrack: remove the number before trying the next candidate
+                combo.pop()
+
+        backtrack(target, [], 0)
+        return results
