@@ -1,0 +1,21 @@
+class Solution(object):
+    def simplifyPath(self, path):
+        stack = []
+        
+        # Split by '/' results in directory names, '.', '..', or empty strings
+        segments = path.split('/')
+        
+        for segment in segments:
+            if segment == "..":
+                # Go up one level if possible
+                if stack:
+                    stack.pop()
+            elif segment == "." or not segment:
+                # Current directory or empty string from '//', do nothing
+                continue
+            else:
+                # Valid directory or file name (including '...')
+                stack.append(segment)
+        
+        # Join segments with / and ensure leading /
+        return "/" + "/".join(stack)
