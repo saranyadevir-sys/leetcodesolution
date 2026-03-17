@@ -1,0 +1,15 @@
+class Solution(object):
+    def hasPathSum(self, root, targetSum):
+        if not root:
+            return False
+        
+        # Subtract current node value from the target
+        targetSum -= root.val
+        
+        # Check if it's a leaf node
+        if not root.left and not root.right:
+            return targetSum == 0
+        
+        # Recursively check children
+        return self.hasPathSum(root.left, targetSum) or \
+               self.hasPathSum(root.right, targetSum)
