@@ -1,0 +1,19 @@
+class Solution(object):
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Initialize with the first element
+        max_so_far = nums[0]
+        current_sum = nums[0]
+        
+        # Iterate from the second element onward
+        for i in range(1, len(nums)):
+            # If current_sum is negative, starting fresh at nums[i] is always better
+            current_sum = max(nums[i], current_sum + nums[i])
+            
+            # Update the global maximum if the new current_sum is larger
+            max_so_far = max(max_so_far, current_sum)
+            
+        return max_so_far
