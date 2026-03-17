@@ -1,0 +1,33 @@
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        results = []
+        # Sorting is essential to handle duplicates and optimize pruning
+        candidates.sort()
+
+        def backtrack(remain, combo, start):
+            if remain == 0:
+                results.append(list(combo))
+                return
+            
+            for i in range(start, len(candidates)):
+                # If the current number is greater than the remaining target,
+                # no point in checking the rest of the sorted numbers.
+                if candidates[i] > remain:
+                    break
+                
+                # Skip duplicate numbers at the same recursive depth
+                if i > start and candidates[i] == candidates[i - 1]:
+                    continue
+                
+                combo.append(candidates[i])
+                # Move to 'i + 1' because each number can only be used once
+                backtrack(remain - candidates[i], combo, i + 1)
+                combo.pop()
+
+        backtrack(target, [], 0)
+        return results
