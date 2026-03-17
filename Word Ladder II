@@ -1,0 +1,29 @@
+from collections import defaultdict, deque
+
+class Solution(object):
+    def findLadders(self, beginWord, endWord, wordList):
+        wordSet = set(wordList)
+        if endWord not in wordSet:
+            return []
+        
+        # Layer-based BFS to find shortest distances and build the graph
+        layer = {beginWord: [[beginWord]]}
+        while layer:
+            new_layer = defaultdict(list)
+            for word, paths in layer.items():
+                if word == endWord:
+                    return layer[endWord]
+                
+                # Try changing each character to find neighbors
+                for i in range(len(word)):
+                    for c in 'abcdefghijklmnopqrstuvwxyz':
+                        next_word = word[:i] + c + word[i+1:]
+                        if next_word in wordSet:
+                            for path in paths:
+                                new_layer[next_word].append(path + [next_word])
+            
+            # Remove visited words from wordSet to ensure shortest path
+            wordSet -= set(new_layer.keys())
+            layer = new_layer
+            
+        return []
