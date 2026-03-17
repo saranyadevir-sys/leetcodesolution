@@ -1,0 +1,28 @@
+class Solution(object):
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        results = []
+        
+        def backtrack(current_path):
+            # Base case: if the current path length matches nums, we found a permutation
+            if len(current_path) == len(nums):
+                results.append(list(current_path))
+                return
+            
+            for num in nums:
+                # If number is already used in the current path, skip it
+                if num in current_path:
+                    continue
+                
+                # Choose the number
+                current_path.append(num)
+                # Explore further
+                backtrack(current_path)
+                # Backtrack: remove the number to try other possibilities
+                current_path.pop()
+        
+        backtrack([])
+        return results
