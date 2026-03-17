@@ -1,0 +1,30 @@
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        """
+        :type intervals: List[List[int]]
+        :type newInterval: List[int]
+        :rtype: List[List[int]]
+        """
+        res = []
+        new_start, new_end = newInterval
+        i, n = 0, len(intervals)
+        
+        # 1. Add all intervals that end BEFORE the new interval starts
+        while i < n and intervals[i][1] < new_start:
+            res.append(intervals[i])
+            i += 1
+            
+        # 2. Merge all overlapping intervals with the new interval
+        # An interval overlaps if its start is BEFORE or AT the new interval's end
+        while i < n and intervals[i][0] <= new_end:
+            new_start = min(new_start, intervals[i][0])
+            new_end = max(new_end, intervals[i][1])
+            i += 1
+        res.append([new_start, new_end])
+        
+        # 3. Add all remaining intervals that start AFTER the merged interval ends
+        while i < n:
+            res.append(intervals[i])
+            i += 1
+            
+        return res
