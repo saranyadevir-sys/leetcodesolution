@@ -1,0 +1,46 @@
+from collections import Counter
+
+class Solution(object):
+    def findSubstring(self, s, words):
+        if not s or not words:
+            return []
+        
+        word_len = len(words[0])
+        num_words = len(words)
+        total_len = word_len * num_words
+        word_count = Counter(words)
+        results = []
+        
+        # Iterate over all possible offsets (0 to word_len - 1)
+        for i in range(word_len):
+            left = i
+            right = i
+            current_count = Counter()
+            words_used = 0
+            
+            # Slide the window across the string
+            while right + word_len <= len(s):
+                word = s[right : right + word_len]
+                right += word_len
+                
+                if word in word_count:
+                    current_count[word] += 1
+                    words_used += 1
+                    
+                    # If we have too many of 'word', shrink from left
+                    while current_count[word] > word_count[word]:
+                        left_word = s[left : left + word_len]
+                        current_count[left_word] -= 1
+                        words_used -= 1
+                        left += word_len
+                    
+                    # Check if we found a complete permutation
+                    if words_used == num_words:
+                        results.append(left)
+                else:
+                    # Not a valid word, reset window
+                    current_count.clear()
+                    words_used = 0
+                    left = right
+                    
+        return results
