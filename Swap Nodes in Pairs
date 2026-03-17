@@ -1,0 +1,25 @@
+class Solution(object):
+    def swapPairs(self, head):
+        # Handle cases with 0 or 1 node
+        if not head or not head.next:
+            return head
+        
+        # Dummy node to act as a pre-head
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy
+        
+        while prev.next and prev.next.next:
+            # Nodes to be swapped
+            first = prev.next
+            second = prev.next.next
+            
+            # Swapping logic
+            first.next = second.next
+            second.next = first
+            prev.next = second
+            
+            # Move prev pointer two nodes ahead for the next pair
+            prev = first
+            
+        return dummy.next
