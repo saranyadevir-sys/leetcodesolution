@@ -1,0 +1,15 @@
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        if not nums:
+            return None
+        
+        # 1. Pick the middle element as the root
+        mid = len(nums) // 2
+        root = TreeNode(nums[mid])
+        
+        # 2. Recursively build the left and right subtrees
+        # Standard slicing handles the base case (empty lists) automatically
+        root.left = self.sortedArrayToBST(nums[:mid])
+        root.right = self.sortedArrayToBST(nums[mid+1:])
+        
+        return root
