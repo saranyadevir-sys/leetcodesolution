@@ -1,0 +1,27 @@
+class Solution(object):
+    def fullJustify(self, words, maxWidth):
+        """
+        :type words: List[str]
+        :type maxWidth: int
+        :rtype: List[str]
+        """
+        res, line, line_len = [], [], 0
+        
+        for w in words:
+            # Check if adding the next word (plus a mandatory space) exceeds maxWidth
+            if line_len + len(w) + len(line) > maxWidth:
+                # Fully justify the current line
+                for i in range(maxWidth - line_len):
+                    # Distribute spaces: use modulo to favor the left side
+                    line[i % (len(line) - 1 or 1)] += ' '
+                res.append("".join(line))
+                line, line_len = [], 0
+            
+            line.append(w)
+            line_len += len(w)
+            
+        # Handle the last line: left-justified
+        last_line = " ".join(line)
+        res.append(last_line + ' ' * (maxWidth - len(last_line)))
+        
+        return res
