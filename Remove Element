@@ -1,0 +1,15 @@
+class Solution(object):
+    def removeElement(self, nums, val):
+        # k is the pointer for the next position to write a non-val element
+        k = 0
+        
+        # Iterate through every element in the array
+        for i in range(len(nums)):
+            # If the current element is not the value to remove
+            if nums[i] != val:
+                # Place it at the k-th position and increment k
+                nums[k] = nums[i]
+                k += 1
+                
+        # k represents the number of elements not equal to val
+        return k
