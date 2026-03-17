@@ -1,0 +1,37 @@
+class Solution(object):
+    def isNumber(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        seen_digit = seen_dot = seen_exponent = False
+        
+        for i, char in enumerate(s):
+            if char.isdigit():
+                seen_digit = True
+            
+            elif char in "+-":
+                # A sign is only valid at the start or immediately after an 'e/E'
+                if i > 0 and s[i-1] not in "eE":
+                    return False
+            
+            elif char in "eE":
+                # Exponent is valid only if we've seen a digit and haven't seen an 'e' yet
+                if seen_exponent or not seen_digit:
+                    return False
+                seen_exponent = True
+                # Reset digit flag: an exponent must be followed by a new integer
+                seen_digit = False
+            
+            elif char == ".":
+                # Dot is valid only if we haven't seen a dot or an exponent yet
+                if seen_dot or seen_exponent:
+                    return False
+                seen_dot = True
+            
+            else:
+                # Any other character (like 'a', 'b', etc.) is invalid
+                return False
+        
+        # The string is only a valid number if it ends having seen at least one digit
+        return seen_digit
