@@ -1,0 +1,35 @@
+class Solution(object):
+    def permuteUnique(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        results = []
+        nums.sort()  # Sorting is crucial to group duplicates
+        used = [False] * len(nums)
+
+        def backtrack(path):
+            if len(path) == len(nums):
+                results.append(list(path))
+                return
+            
+            for i in range(len(nums)):
+                # If already used in this permutation, skip
+                if used[i]:
+                    continue
+                
+                # If current is same as previous AND previous was not used,
+                # it means we already explored this branch. Skip to avoid duplicates.
+                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                    continue
+                
+                used[i] = True
+                path.append(nums[i])
+                backtrack(path)
+                
+                # Backtrack
+                path.pop()
+                used[i] = False
+
+        backtrack([])
+        return results
