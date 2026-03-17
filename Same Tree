@@ -1,0 +1,21 @@
+class Solution(object):
+    def isSameTree(self, p, q):
+        """
+        :type p: Optional[TreeNode]
+        :type q: Optional[TreeNode]
+        :rtype: bool
+        """
+        # 1. If both nodes are None, they are the same
+        if not p and not q:
+            return True
+        
+        # 2. If one is None and the other isn't, they are different
+        if not p or not q:
+            return False
+        
+        # 3. If the values are different, they are different
+        if p.val != q.val:
+            return False
+        
+        # 4. Recursively check left and right subtrees
+        return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
