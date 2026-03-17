@@ -1,0 +1,29 @@
+class Solution(object):
+    def rotateRight(self, head, k):
+        if not head or not head.next or k == 0:
+            return head
+        
+        # 1. Find the length and the actual tail node
+        last_node = head
+        length = 1
+        while last_node.next:
+            last_node = last_node.next
+            length += 1
+            
+        # 2. Close the loop (make it circular)
+        last_node.next = head
+        
+        # 3. Find the new break point
+        # If k > length, we only need to rotate k % length times
+        k = k % length
+        steps_to_new_tail = length - k - 1
+        
+        new_tail = head
+        for _ in range(steps_to_new_tail):
+            new_tail = new_tail.next
+            
+        # 4. Break the circle
+        new_head = new_tail.next
+        new_tail.next = None
+        
+        return new_head
