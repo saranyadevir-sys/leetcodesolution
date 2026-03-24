@@ -1,0 +1,19 @@
+class Solution(object):
+    def combine(self, n, k):
+        res = []
+        
+        def backtrack(start, path):
+            # Base case: valid combination found
+            if len(path) == k:
+                res.append(list(path))
+                return
+            
+            # Recursive step
+            # Optimization: stop if there aren't enough numbers left to fill k
+            for i in range(start, n + 1):
+                path.append(i)
+                backtrack(i + 1, path)
+                path.pop() # Backtrack
+                
+        backtrack(1, [])
+        return res
