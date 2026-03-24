@@ -1,0 +1,12 @@
+class Solution(object):
+    def getRow(self, rowIndex):
+        # Initialize row with 1s
+        row = [1] * (rowIndex + 1)
+        
+        # Build the triangle row by row up to rowIndex
+        for i in range(2, rowIndex + 1):
+            # Update middle elements in reverse to use the same list
+            for j in range(i - 1, 0, -1):
+                row[j] = row[j] + row[j-1]
+                
+        return row
