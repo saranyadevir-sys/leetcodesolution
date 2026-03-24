@@ -1,0 +1,21 @@
+class Solution(object):
+    def calculateMinimumHP(self, dungeon):
+        m, n = len(dungeon), len(dungeon[0])
+        
+        # Initialize DP table with infinity
+        dp = [[float('inf')] * (n + 1) for _ in range(m + 1)]
+        
+        # Base cases: To survive after the princess, you need 1 HP
+        dp[m][n-1] = 1
+        dp[m-1][n] = 1
+        
+        # Fill the table backwards
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                # Health needed to survive the next step
+                min_next = min(dp[i+1][j], dp[i][j+1])
+                
+                # Health needed before entering current room
+                dp[i][j] = max(1, min_next - dungeon[i][j])
+                
+        return dp[0][0]
