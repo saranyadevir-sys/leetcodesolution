@@ -1,0 +1,18 @@
+class Solution(object):
+    def convertToTitle(self, columnNumber):
+        """
+        :type columnNumber: int
+        :rtype: str
+        """
+        result = []
+        while columnNumber > 0:
+            # Adjust to 0-indexed for modulo and division
+            columnNumber -= 1
+            # Find the remainder to get the current character
+            remainder = columnNumber % 26
+            result.append(chr(65 + remainder))
+            # Move to the next "digit"
+            columnNumber //= 26
+            
+        # The characters were added from right to left, so reverse them
+        return "".join(reversed(result))
