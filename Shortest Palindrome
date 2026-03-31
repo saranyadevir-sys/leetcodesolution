@@ -1,0 +1,29 @@
+class Solution(object):
+    def shortestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s:
+            return ""
+        
+        # Create a combined string: original + separator + reversed_original
+        # The separator '#' ensures the longest prefix-suffix doesn't cross the boundary
+        rev_s = s[::-1]
+        combined = s + "#" + rev_s
+        
+        # Build the KMP table (LPS - Longest Prefix Suffix)
+        lps = [0] * len(combined)
+        for i in range(1, len(combined)):
+            j = lps[i - 1]
+            while j > 0 and combined[i] != combined[j]:
+                j = lps[j - 1]
+            if combined[i] == combined[j]:
+                j += 1
+            lps[i] = j
+        
+        # The last value in lps tells us the length of the longest palindromic prefix
+        palindrome_len = lps[-1]
+        
+        # Add the non-palindromic part (reversed) to the front
+        return rev_s[:len(s) - palindrome_len] + s
