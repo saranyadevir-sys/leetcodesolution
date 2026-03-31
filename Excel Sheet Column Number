@@ -1,0 +1,14 @@
+class Solution(object):
+    def titleToNumber(self, columnTitle):
+        """
+        :type columnTitle: str
+        :rtype: int
+        """
+        result = 0
+        for char in columnTitle:
+            # ord(char) - 64 maps 'A' to 1, 'B' to 2, etc.
+            value = ord(char) - ord('A') + 1
+            # Shift the existing result by one base-26 "place" and add the new value
+            result = result * 26 + value
+            
+        return result
