@@ -1,0 +1,47 @@
+import heapq
+
+class Solution(object):
+    def getSkyline(self, buildings):
+        """
+        :type buildings: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        # 1. Create events: (x, -height) for start, (x, height) for end
+        events = []
+        for l, r, h in buildings:
+            events.append((l, -h))
+            events.append((r, h))
+        
+        # 2. Sort events by x, then by height
+        events.sort()
+        
+        # 3. Max-Heap to track active heights (initialized with 0 for the ground)
+        # Using a dictionary to track 'removals' lazily
+        res = [[0, 0]]
+        max_heap = [0]
+        # To handle removals in O(log N), we use a secondary heap or a counter
+        # Python's heapq is a min-heap, so we store negative values for max-heap behavior
+        active_heights = {0: 1} 
+        
+        # For lazy removal, we'll use a max_heap and track counts of heights
+        live_heap = [0]
+        past_heights = {} # height -> count to be removed
+
+        for x, h in events:
+            if h < 0: # Start of a building
+                h = -h
+                heapq.heappush(live_heap, -h)
+            else: # End of a building
+                past_heights[h] = past_heights.get(h, 0) + 1
+            
+            # 4. Lazy Removal: Clean the top of the heap
+            while -live_heap[0] in past_heights and past_heights[-live_heap[0]] > 0:
+                h_to_remove = -heapq.heappop(live_heap)
+                past_heights[h_to_remove] -= 1
+            
+            # 5. If the max height changed, add a key point
+            curr_max = -live_heap[0]
+            if res[-1][1] != curr_max:
+                res.append([x, curr_max])
+                
+        return res[1:]
