@@ -1,0 +1,19 @@
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        slow = head
+        fast = head
+        
+        while fast and fast.next:
+            slow = slow.next          # Moves 1 step
+            fast = fast.next.next     # Moves 2 steps
+            
+            # If they meet, a cycle exists
+            if slow == fast:
+                return True
+                
+        # If fast reaches the end, no cycle exists
+        return False
