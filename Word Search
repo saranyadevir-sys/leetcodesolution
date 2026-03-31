@@ -1,0 +1,40 @@
+class Solution(object):
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        rows, cols = len(board), len(board[0])
+        
+        def backtrack(r, c, index):
+            # If we've matched all characters in the word
+            if index == len(word):
+                return True
+            
+            # Boundary checks and character matching
+            if (r < 0 or r >= rows or 
+                c < 0 or c >= cols or 
+                board[r][c] != word[index]):
+                return False
+            
+            # Mark the current cell as visited using a placeholder
+            temp = board[r][c]
+            board[r][c] = "#"
+            
+            # Explore all 4 adjacent directions
+            found = (backtrack(r + 1, c, index + 1) or
+                     backtrack(r - 1, c, index + 1) or
+                     backtrack(r, c + 1, index + 1) or
+                     backtrack(r, c - 1, index + 1))
+            
+            # Restore the cell (backtrack)
+            board[r][c] = temp
+            return found
+
+        for r in range(rows):
+            for c in range(cols):
+                if backtrack(r, c, 0):
+                    return True
+                    
+        return False
