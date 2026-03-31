@@ -1,0 +1,21 @@
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type headA, headB: ListNode
+        :rtype: ListNode
+        """
+        if not headA or not headB:
+            return None
+
+        ptrA = headA
+        ptrB = headB
+
+        # Continue until the pointers meet (either at a node or both at None)
+        while ptrA != ptrB:
+            # If ptrA reaches the end, switch to headB; otherwise, move to next
+            ptrA = ptrA.next if ptrA else headB
+            
+            # If ptrB reaches the end, switch to headA; otherwise, move to next
+            ptrB = ptrB.next if ptrB else headA
+
+        return ptrA
