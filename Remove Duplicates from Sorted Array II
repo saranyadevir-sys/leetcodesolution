@@ -1,0 +1,22 @@
+class Solution(object):
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums) <= 2:
+            return len(nums)
+        
+        # 'k' is the pointer for the next position to write to
+        # The first two elements are always allowed
+        k = 2
+        
+        # Iterate through the array starting from the third element
+        for i in range(2, len(nums)):
+            # If the current element is NOT the same as the element 
+            # at k-2, it means we haven't reached 3 duplicates yet
+            if nums[i] != nums[k - 2]:
+                nums[k] = nums[i]
+                k += 1
+                
+        return k
