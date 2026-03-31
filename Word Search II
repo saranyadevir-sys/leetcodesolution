@@ -1,0 +1,50 @@
+class Solution(object):
+    def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        # Step 1: Build the Trie
+        trie = {}
+        for word in words:
+            node = trie
+            for char in word:
+                node = node.setdefault(char, {})
+            node['#'] = word  # Mark the end of a word with the full string
+
+        rows, cols = len(board), len(board[0])
+        res = []
+
+        def backtrack(r, c, parent):
+            char = board[r][c]
+            curr_node = parent[char]
+
+            # Check if we found a word
+            word_match = curr_node.pop('#', None)
+            if word_match:
+                res.append(word_match)
+
+            # Mark as visited
+            board[r][c] = "@"
+
+            # Explore neighbors
+            for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and board[nr][nc] in curr_node:
+                    backtrack(nr, nc, curr_node)
+
+            # Restore the cell (Backtrack)
+            board[r][c] = char
+
+            # Optimization: Remove empty leaf nodes from Trie
+            if not curr_node:
+                parent.pop(char)
+
+        # Step 2: Start DFS from every cell that matches a Trie root
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] in trie:
+                    backtrack(r, c, trie)
+
+        return res
